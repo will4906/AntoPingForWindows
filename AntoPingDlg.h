@@ -20,6 +20,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAntoPingDlg)
 	enum { IDD = IDD_ANTOPING_DIALOG };
+	CButton	m_checkRange;
 	UINT	m_nEnd1;
 	UINT	m_nEnd2;
 	UINT	m_nEnd3;
@@ -40,6 +41,8 @@ public:
 protected:
 	HICON m_hIcon;
 	BOOL WriteToBatFile();
+	int ChoosePlaceToSave(CString strFile);
+	CString customFilePath;
 	// Generated message map functions
 	//{{AFX_MSG(CAntoPingDlg)
 	virtual BOOL OnInitDialog();
@@ -47,6 +50,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnButtonStart();
+	afx_msg void OnDestroy();
+	afx_msg void OnCheckRange();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

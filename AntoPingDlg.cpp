@@ -80,6 +80,7 @@ void CAntoPingDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAntoPingDlg)
+	DDX_Control(pDX, IDC_CHECK_RANGE, m_checkRange);
 	DDX_Text(pDX, IDC_EDIT_END_IP1, m_nEnd1);
 	DDV_MinMaxUInt(pDX, m_nEnd1, 0, 255);
 	DDX_Text(pDX, IDC_EDIT_END_IP2, m_nEnd2);
@@ -105,6 +106,8 @@ BEGIN_MESSAGE_MAP(CAntoPingDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
+	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_CHECK_RANGE, OnCheckRange)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -139,6 +142,14 @@ BOOL CAntoPingDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
 	// TODO: Add extra initialization here
+	GetDlgItem(IDC_EDIT_START_IP1)->SetWindowText("192");
+	GetDlgItem(IDC_EDIT_START_IP2)->SetWindowText("168");
+	GetDlgItem(IDC_EDIT_END_IP1)->SetWindowText("192");
+	GetDlgItem(IDC_EDIT_END_IP2)->SetWindowText("168");
+	GetDlgItem(IDC_EDIT_END_IP1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_END_IP2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_END_IP3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_END_IP4)->EnableWindow(FALSE);
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -197,15 +208,20 @@ void CAntoPingDlg::OnButtonStart()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	
-	if (WriteToBatFile())
+	if (ChoosePlaceToSave("log.txt") == IDOK)
 	{
-		CString strFile = _T("autoping.bat");
-		ShellExecute(NULL, _T("open"), strFile, _T(""), NULL, SW_NORMAL);
+		if (WriteToBatFile())
+		{
+			CString strFile = _T("autoping.bat");
+			ShellExecute(NULL, _T("open"), strFile, _T(""), NULL, SW_SHOWMINIMIZED);
+			AfxMessageBox("启动成功，文件将输出到\"log.txt\"");
+		}
+		else
+		{
+			AfxMessageBox("启动失败");
+		}
 	}
-	else
-	{
-		AfxMessageBox("启动失败");
-	}
+	
 	
 }
 
@@ -220,11 +236,19 @@ BOOL CAntoPingDlg::WriteToBatFile()
 		startIp |= m_nStart3 << 8;
 		startIp |= m_nStart4;
 
-		endIp |= m_nEnd1 << 24;
-		endIp |= m_nEnd2 << 16;
-		endIp |= m_nEnd3 << 8;
-		endIp |= m_nEnd4;
-
+		if (m_checkRange.GetCheck() == 1)
+		{
+			endIp |= m_nEnd1 << 24;
+			endIp |= m_nEnd2 << 16;
+			endIp |= m_nEnd3 << 8;
+			endIp |= m_nEnd4;
+		}
+		else
+		{
+			endIp = startIp;
+		}
+		
+		stFile.WriteString("@echo 请不要关闭cmd，否则ping将终止\n");
 		stFile.WriteString("@echo off\n");
 		unsigned int i = 0;
 		for (i = startIp; i < endIp + 1; i++)
@@ -234,15 +258,66 @@ BOOL CAntoPingDlg::WriteToBatFile()
 			strIp2.Format("%03d", (i & 0x00ff0000) >> 16);
 			strIp3.Format("%03d", (i & 0x0000ff00) >> 8);
 			strIp4.Format("%03d", i & 0x000000ff);
-			strIp = "ping " + strIp1 + "." + strIp2 + "." + strIp3 + "." + strIp4;
+			if (i == startIp)
+			{
+				strIp = "ping " + strIp1 + "." + strIp2 + "." + strIp3 + "." + strIp4 + " > " + customFilePath;
+			}
+			else
+			{
+				strIp = "ping " + strIp1 + "." + strIp2 + "." + strIp3 + "." + strIp4 + " >> " + customFilePath;
+			}
 			stFile.WriteString(strIp + "\n");
 		}
-		stFile.WriteString("pause");
 		stFile.Close();
 		return TRUE;
 	}
 	else
 	{
 		return FALSE;
+	}
+}
+
+int CAntoPingDlg::ChoosePlaceToSave(CString strFile)
+{
+	const char pszFilter[] = _T("Text File (*.txt)|*.txt||");
+	CFileDialog dlgSave(FALSE, //FALSE为保存
+		_T(".txt"), //自动加上的扩展名
+		_T(strFile), //默认保存的文件名
+		OFN_NOCHANGEDIR,
+		pszFilter, this);
+	BOOL flag = dlgSave.DoModal();
+	if (flag == TRUE)
+	{
+		customFilePath = dlgSave.GetPathName();
+	}
+
+	return flag;
+}
+
+void CAntoPingDlg::OnDestroy() 
+{
+	CDialog::OnDestroy();
+	
+	// TODO: Add your message handler code here
+}
+
+void CAntoPingDlg::OnCheckRange() 
+{
+	// TODO: Add your control notification handler code here
+	if (m_checkRange.GetCheck())
+	{
+		m_checkRange.SetWindowText("多个");
+		GetDlgItem(IDC_EDIT_END_IP1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_END_IP2)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_END_IP3)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_END_IP4)->EnableWindow(TRUE);
+	}
+	else
+	{
+		m_checkRange.SetWindowText("单个");
+		GetDlgItem(IDC_EDIT_END_IP1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_END_IP2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_END_IP3)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_END_IP4)->EnableWindow(FALSE);
 	}
 }

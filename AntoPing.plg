@@ -3,23 +3,42 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
+--------------------Configuration: AntoPing - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Release/AntoPing.res" /d "NDEBUG" /d "_AFXDLL" "G:\Core\MFC\AntoPing\AntoPing.rc"" 
+Creating temporary file "C:\Users\will\AppData\Local\Temp\RSP518F.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/AntoPing.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"G:\Core\MFC\AntoPing\AntoPing.cpp"
+"G:\Core\MFC\AntoPing\AntoPingDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\will\AppData\Local\Temp\RSP518F.tmp" 
+Creating temporary file "C:\Users\will\AppData\Local\Temp\RSP5190.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/AntoPing.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"G:\Core\MFC\AntoPing\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\will\AppData\Local\Temp\RSP5190.tmp" 
+Creating command line "link.exe /nologo /subsystem:windows /incremental:no /pdb:"Release/AntoPing.pdb" /machine:I386 /out:"Release/AntoPing.exe"  .\Release\AntoPing.obj .\Release\AntoPingDlg.obj .\Release\StdAfx.obj .\Release\AntoPing.res "
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AntoPing.cpp
+AntoPingDlg.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+AntoPing.exe - 0 error(s), 0 warning(s)
+<h3>
 --------------------Configuration: AntoPing - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\will\AppData\Local\Temp\RSPEA67.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/AntoPing.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"G:\Core\MFC\AntoPing\AntoPingDlg.cpp"
-]
-Creating command line "cl.exe @C:\Users\will\AppData\Local\Temp\RSPEA67.tmp" 
-Creating command line "link.exe /nologo /subsystem:windows /incremental:yes /pdb:"Debug/AntoPing.pdb" /debug /machine:I386 /out:"Debug/AntoPing.exe" /pdbtype:sept  .\Debug\AntoPing.obj .\Debug\AntoPingDlg.obj .\Debug\StdAfx.obj .\Debug\AntoPing.res "
-<h3>Output Window</h3>
-Compiling...
-AntoPingDlg.cpp
-Linking...
-Creating command line "bscmake.exe /nologo /o"Debug/AntoPing.bsc"  .\Debug\StdAfx.sbr .\Debug\AntoPing.sbr .\Debug\AntoPingDlg.sbr"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 

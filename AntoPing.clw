@@ -30,7 +30,7 @@ ImplementationFile=AntoPingDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_EDIT_START_IP1
+LastObject=IDC_CHECK_RANGE
 
 [CLS:CAboutDlg]
 Type=0
@@ -50,7 +50,7 @@ Control4=IDOK,button,1342373889
 [DLG:IDD_ANTOPING_DIALOG]
 Type=1
 Class=CAntoPingDlg
-ControlCount=10
+ControlCount=11
 Control1=IDC_BUTTON_START,button,1342242816
 Control2=IDC_EDIT_START_IP1,edit,1350639744
 Control3=IDC_EDIT_END_IP1,edit,1350639744
@@ -61,4 +61,5 @@ Control7=IDC_EDIT_START_IP4,edit,1350639744
 Control8=IDC_EDIT_END_IP2,edit,1350639744
 Control9=IDC_EDIT_END_IP3,edit,1350639744
 Control10=IDC_EDIT_END_IP4,edit,1350639744
+Control11=IDC_CHECK_RANGE,button,1342242819
 
