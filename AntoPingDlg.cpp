@@ -236,10 +236,6 @@ BOOL CAntoPingDlg::WriteToBatFile()
 			strIp4.Format("%03d", i & 0x000000ff);
 			strIp = "ping " + strIp1 + "." + strIp2 + "." + strIp3 + "." + strIp4;
 			stFile.WriteString(strIp + "\n");
-			if (i == endIp - 3)
-			{
-				i = i;
-			}
 		}
 		stFile.WriteString("pause");
 		stFile.Close();
@@ -250,7 +246,3 @@ BOOL CAntoPingDlg::WriteToBatFile()
 		return FALSE;
 	}
 }
-
-//m_bStart1 > m_bEnd1 ? 0 : (m_bStart2 > m_bEnd2 ? 0 : (m_bStart3 > m_bEnd3 ? 0 : (m_bStart4 > m_bEnd4 ? 0 : )))
-//
-//12345678 12345678 12345678 12345678
